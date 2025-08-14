@@ -1,43 +1,32 @@
 "use client"
 
-import { addCity } from '@/redux/slices/weatherSlice'
+import { addNewCity, selectLoading, selectError } from '@/redux/slices/weatherSlice'
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Search = () => {
 	const [city, setCity] = useState('')
-	const [error, setError] = useState('')
-	const [loading, setLoading] = useState(false)
-
+	const [localError, setLocalError] = useState('')
+	
 	const dispatch = useDispatch()
+	const loading = useSelector(selectLoading)
+	const error = useSelector(selectError)
 
 	async function searchCity(cityName) {
-		setError('');
-		setLoading(true);
-
+		setLocalError('');
 		try {
-			const geocodeResponse = await fetch(`/api/geocode?city=${encodeURIComponent(cityName)}`);
-			if (!geocodeResponse.ok) {
-				const errorData = await geocodeResponse.json();
-				throw new Error(errorData.error || 'Failed to geocode city');
+			const result = await dispatch(addNewCity(cityName)).unwrap();
+			if (result.success) {
+				setCity('');
+			} else {
+				setLocalError(result.error);
 			}
-			const geocodeData = await geocodeResponse.json();
-
-			dispatch(addCity({
-				id: geocodeData.id,
-				name: geocodeData.name,
-				country: geocodeData.country,
-				latitude: geocodeData.latitude,
-				longitude: geocodeData.longitude,
-			}))
-
-			setCity('');
 		} catch (error) {
-			setError(error.message);
-		} finally {
-			setLoading(false);
+			setLocalError(error.message);
 		}
 	}
+
+	const displayError = localError || error;
 
   return (
 		<div className='flex flex-col items-center gap-2'>
@@ -58,7 +47,7 @@ const Search = () => {
 					Search
 				</button>
 			</form>
-			{error && <p className='text-red-800'>{error}</p>}
+			{displayError && <p className='text-red-800'>{displayError}</p>}
 		</div>
   )
 }

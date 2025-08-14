@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
 import weatherSlice from "@/redux/slices/weatherSlice"
-import modalSlice from "@/redux/slices/modalSlice"
+import daySlice from "@/redux/slices/daySlice"
 
 export const store = configureStore({
   reducer: {
     weather: weatherSlice,
-    modal: modalSlice,
+    day: daySlice,
   }
 })
