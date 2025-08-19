@@ -7,6 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getWeatherInfo } from '@/utils/weather';
+import Precipitation from './Cards/Precipitation';
 
 const DayDetail = () => {
 	const dispatch = useDispatch()
@@ -20,6 +21,7 @@ const DayDetail = () => {
 	
 	const loading = !data
 	const error = data?.error || ''
+	const rain = !data?.precipitation_probability.every(val => val === 0)
 
 	useEffect(() => {
 		if (!open || !payload) return;
@@ -33,7 +35,7 @@ const DayDetail = () => {
 	if (!payload) return null;
 
   return (
-		<div className='w-full lg:w-1/2 flex flex-col lg:flex-1 card z-20 outline-0 bg-[#dadada] gap-4 fade-in'>
+		<div className='w-full lg:w-1/2 flex flex-col lg:flex-1 card z-20 outline-0 bg-[#dadada] gap-4 fade-in h-fit'>
 			
 			{/* Header */}
 			<div className='flex flex-col w-full p-1'>
@@ -52,33 +54,44 @@ const DayDetail = () => {
 
 			{error && <p className='text-red-800 p-1'>{error}</p>}
 
-			{(!loading && data) && <div className='fade-in flex flex-row justify-between w-full items-center overflow-scroll scrollbar-hide gap-2 px-1 pb-3'>
-				{data.time
-					.map((time, index) => ({ time, index })) 
-					.filter(({ time }) => { // Filter out past hours
-						const now = new Date();
-						const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));
-						return new Date(time) >= oneHourAgo;
-					}) 
-					.map(({ time, index }) => {
-						const weatherInfo = getWeatherInfo(data.weather_code[index]);
+			{(!loading && data) 
+			&& 
+			<>
+				{/* Main Content */}
+				<div className='fade-in flex flex-row justify-between w-full items-center overflow-scroll scrollbar-hide gap-2 px-1 pb-1'>
+					{data.time
+						.map((time, index) => ({ time, index })) 
+						.filter(({ time }) => { // Filter out past hours
+							const now = new Date();
+							const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000));
+							return new Date(time) >= oneHourAgo;
+						}) 
+						.map(({ time, index }) => {
+							const weatherInfo = getWeatherInfo(data.weather_code[index]);
 
-						return (
-							<div key={index} className='flex flex-col items-center min-w-[49px] max-w-[49px] h-full'>
-								<p className='text-lg mb-1'>{weatherInfo.icon}</p>
-								<p className='text-lg'>{Math.round(data.temperature_2m[index])}°</p>
-								<p className='font-semibold text-sm mt-2 border-b-1 w-full text-center'>
-									{new Date(time).toLocaleTimeString('en-US', {
-										hour: 'numeric',
-										hour12: true,
-									}).toLowerCase().replace(' ', '')}
-								</p>
-								{(!data.precipitation_probability.every(val => val === 0)) && <p className='font-light text-sm mt-3'>{data.precipitation_probability[index]>0 ? data.precipitation_probability[index]+'%💧' : '.'}</p>}
-							</div>
-						)
-				})}
-			</div>}
+							return (
+								<div key={index} className='flex flex-col items-center min-w-[49px] max-w-[49px] h-full'>
+									<p className='text-lg mb-1'>{weatherInfo.icon}</p>
+									<p className='text-lg'>{Math.round(data.temperature_2m[index])}°</p>
+									<p className='font-semibold text-sm mt-1 border-b-1 w-full text-center'>
+										{new Date(time).toLocaleTimeString('en-US', {
+											hour: 'numeric',
+											hour12: true,
+										}).toLowerCase().replace(' ', '')}
+									</p>
+									{rain && <p className='font-light text-sm mt-3'>{data.precipitation_probability[index]>0 ? data.precipitation_probability[index]+'%💧' : '.'}</p>}
+								</div>
+							)
+					})}
+				</div>
 
+				{/* Cards */}
+				<div className='p-1'>
+					{rain && <Precipitation data={data}/>}
+				</div>
+			</>
+			}
+			
 		</div>
   )
 }

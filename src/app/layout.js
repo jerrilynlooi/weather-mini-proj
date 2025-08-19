@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
     <StoreProvider>
       <html lang="en">
         <body className={inter.className}>
-          <div className="w-screen h-screen flex flex-col items-center justify-center">
+          <div className="w-screen min-h-full h-fit flex flex-col items-center justify-center">
             {children}
           </div>
         </body>

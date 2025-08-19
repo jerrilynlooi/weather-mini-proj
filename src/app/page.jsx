@@ -33,7 +33,7 @@ export default function Home() {
       </div>
 
       {/* Data */}
-      <div className="w-full h-full px-2 sm:px-4 md:px-8 mb-10 flex flex-col lg:flex-row gap-2 sm:gap-4">
+      <div className="w-full min-h-full h-fit px-2 sm:px-4 md:px-8 flex flex-col lg:flex-row gap-2 sm:gap-4">
         {dayDetailOpen && <DayDetail/>}
         <CityGrid/>
       </div>

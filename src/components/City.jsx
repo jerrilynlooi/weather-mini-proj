@@ -35,12 +35,12 @@ const City = ({ city }) => {
 						const weatherInfo = getWeatherInfo(data.weather_code[index]);
 
 						return (
-							<div key={index} className={`flex flex-col items-center inner-card w-full h-[100%] bg-[#f1f1f1] hover:bg-[#fafafa] transition min-w-[105px]
+							<div key={index} className={`flex flex-col items-center inner-card w-full h-[100%] bg-[#f1f1f1] hover:bg-[#fafafa] transition min-w-[90px]
 								${(dayPayload?.id === city.id && dayPayload?.date == date) ? 'ring-2 ' : 'ring-0'}`} // && dayPayload?.date == date
 								style={{
 									background: `linear-gradient(to top, 
-										#CCEEFF 0%, 
-										#CCEEFF ${data.precipitation_probability_max[index]}%, 
+										#dbedf3 0%, 
+										#dbedf3 ${data.precipitation_probability_max[index]}%, 
 										#f1f1f1 ${data.precipitation_probability_max[index]}%, 
 										#f1f1f1 100%)`
 								}}
