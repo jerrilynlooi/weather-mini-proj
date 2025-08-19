@@ -8,6 +8,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getWeatherInfo } from '@/utils/weather';
 import Precipitation from './Cards/Precipitation';
+import WindSpeed from './Cards/WindSpeed';
 
 const DayDetail = () => {
 	const dispatch = useDispatch()
@@ -86,8 +87,10 @@ const DayDetail = () => {
 				</div>
 
 				{/* Cards */}
-				<div className='p-1'>
-					{rain && <Precipitation data={data}/>}
+				<div className='flex flex-col p-1 gap-2'>
+					{rain ? <Precipitation data={data}/> : <p className='text-[#888888] my-1'><i>No chance of Precipitation💧</i></p>}
+					<WindSpeed data={data}/>
+					{/* <p className='text-[#3c3c3c] my-1'>Visibility: <span className='font-semibold'>{Math.round(Math.min(...data.visibility)/1000)}</span> km</p> */}
 				</div>
 			</>
 			}

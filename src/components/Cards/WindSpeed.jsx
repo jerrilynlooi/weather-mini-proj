@@ -1,7 +1,7 @@
 import React from 'react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Area, AreaChart } from 'recharts';
 
-const Precipitation = ({ data }) => {
+const WindSpeed = ({ data }) => {
 
 	const chartData = data ? data.time
 		.map((time, index) => {
@@ -12,7 +12,7 @@ const Precipitation = ({ data }) => {
 					hour: 'numeric',
 					hour12: true,
 				}).toLowerCase().replace(' ', ''),
-				precipitation: data.precipitation_probability[index]
+				windspeed: data.wind_speed_10m[index]
 			} : null;
 		})
 		.filter(Boolean) : [];
@@ -22,7 +22,7 @@ const Precipitation = ({ data }) => {
 			return (
 				<div className="bg-[#f1f1f1] p-3 border border-gray-300 rounded-lg shadow-lg">
 					<p className="font-semibold">{label}</p>
-					<p className="font-light">{`${payload[0].value}%💧`}</p>
+					<p className="font-light">{`${payload[0].value}km/h💨`}</p>
 				</div>
 			);
 		}
@@ -31,7 +31,7 @@ const Precipitation = ({ data }) => {
 
   return (
     <div className='fade-in w-full max-w-full inner-card bg-[#f1f1f1]'>
-			<h3 className='text-md font-semibold mb-3 px-1'>Precipitation <span className='font-normal text-[#aaaaaa]'><i>%</i></span></h3>
+			<h3 className='text-md font-semibold mb-3 px-1'>Wind Speed <span className='font-normal text-[#aaaaaa]'><i>km/h</i></span></h3>
 			<ResponsiveContainer width="100%" height={200}>
 				<AreaChart data={chartData}>
 					<CartesianGrid strokeDasharray="3 3" stroke="#aaaaaa" />
@@ -41,17 +41,19 @@ const Precipitation = ({ data }) => {
 						stroke="#3c3c3c"
 					/>
 					<YAxis 
-						domain={[0, 100]}
+						domain={[0, 30]}
 						tick={{ fontSize: 10 }}
 						stroke="#3c3c3c"
-						label={{ value: '%', position: 'insideLeft' }}
+						label={{ value: 'km/h', position: 'insideLeft',
+							style: { fontSize: '12px'}
+						}}
 					/>
 					<Tooltip content={<CustomTooltip />} />
 					<Area
 						type="monotone"
-						dataKey="precipitation"
-						stroke="#22aaeE"
-						fill="rgba(34, 170, 238, 0.2)"
+						dataKey="windspeed"
+						stroke="#9051e8"
+						fill="rgba(144, 81, 232, 0.2)"
 						strokeWidth={1}
 					/>
 				</AreaChart>
@@ -60,4 +62,4 @@ const Precipitation = ({ data }) => {
   )
 }
 
-export default Precipitation
+export default WindSpeed;
