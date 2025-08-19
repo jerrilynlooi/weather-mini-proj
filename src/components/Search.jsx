@@ -1,6 +1,6 @@
 "use client"
 
-import { addNewCity, selectLoading, selectError } from '@/redux/slices/weatherSlice'
+import { addNewCity } from '@/redux/slices/weatherSlice'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -9,8 +9,8 @@ const Search = () => {
 	const [localError, setLocalError] = useState('')
 	
 	const dispatch = useDispatch()
-	const loading = useSelector(selectLoading)
-	const error = useSelector(selectError)
+	const loading = useSelector(state => state.weather.loading)
+	const error = useSelector(state => state.weather.error)
 
 	async function searchCity(cityName) {
 		setLocalError('');

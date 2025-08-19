@@ -12,20 +12,16 @@ const DayDetail = () => {
 	const open = useSelector(state => state.day.dayDetailOpen)
 	const payload = useSelector(state => state.day.payload)
 	
-	// Get hourly weather data from Redux store
 	const data = useSelector(state => {
 		if (!payload) return null
 		return selectHourlyWeatherForLocation(state, payload.latitude, payload.longitude, payload.date)
 	})
 	
-	// Determine loading and error states
 	const loading = !data
 	const error = data?.error || ''
 
 	useEffect(() => {
 		if (!open || !payload) return;
-
-		// Fetch hourly weather data when day detail opens
 		dispatch(fetchHourlyWeatherData({
 			latitude: payload.latitude,
 			longitude: payload.longitude,

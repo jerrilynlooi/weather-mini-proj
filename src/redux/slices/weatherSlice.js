@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 const initialState = {
   cities: [
     {
-      id: 2158177,
+      id: 2158177, // Start with melbourne weather card by default !
       name: "Melbourne",
       country: "Australia",
       latitude: -37.814,
@@ -11,8 +11,7 @@ const initialState = {
     }
   ],
   weatherData: {},
-  hourlyWeatherData: {}, // Store hourly weather data for day details
-  lastUpdated: null,
+  hourlyWeatherData: {}, 
   refreshing: false,
   loading: false,
   error: null
@@ -36,7 +35,6 @@ export const addNewCity = createAsyncThunk(
         latitude: geocodeData.latitude,
         longitude: geocodeData.longitude,
       }
-
       dispatch(addCity(newCity))
 
       const weatherResponse = await fetch(`/api/weather?lat=${newCity.latitude}&lon=${newCity.longitude}&type=daily`)
@@ -44,10 +42,10 @@ export const addNewCity = createAsyncThunk(
         const errorData = await weatherResponse.json()
         throw new Error(errorData.error || 'Failed to fetch weather data')
       }
-      const weatherData = await weatherResponse.json()
 
+      const weatherData = await weatherResponse.json()
       dispatch(updateWeatherData({ cityId: newCity.id, data: weatherData }))
-      
+
       return { success: true, city: newCity }
     } catch (error) {
       return { success: false, error: error.message }
@@ -84,7 +82,6 @@ export const refreshAllWeatherData = createAsyncThunk(
       })
 
       await Promise.all(promises)
-      dispatch(setLastUpdated(new Date().toISOString()))
       dispatch(refreshHourlyWeatherData())
     } finally {
       dispatch(setRefreshing(false))
@@ -108,25 +105,20 @@ export const fetchHourlyWeatherData = createAsyncThunk(
       const weatherData = await weatherResponse.json()
       const key = `${latitude}-${longitude}-${date}`
       dispatch(updateHourlyWeatherData({ key, data: weatherData }))
-      
+
       return { success: true, data: weatherData }
     } catch (error) {
       return { success: false, error: error.message }
     }
   }
 )
-
-// Async thunk for refreshing hourly weather data
 export const refreshHourlyWeatherData = createAsyncThunk(
   'weather/refreshHourlyWeatherData',
   async (_, { getState, dispatch }) => {
     const state = getState()
-    const dayState = state.day
-    
-    // Only refresh if day detail is open and we have payload
-    if (!dayState.dayDetailOpen || !dayState.payload) return
-    
-    const { latitude, longitude, date } = dayState.payload
+    if (!state.day.dayDetailOpen || !state.day.payload) return
+
+    const { latitude, longitude, date } = state.day.payload
     await dispatch(fetchHourlyWeatherData({ latitude, longitude, date }))
   }
 )
@@ -145,14 +137,10 @@ const weatherSlice = createSlice({
     updateWeatherData: (state, action) => {
       const { cityId, data } = action.payload;
       state.weatherData[cityId] = data;
-      state.lastUpdated = new Date().toISOString();
     },
     updateHourlyWeatherData: (state, action) => {
       const { key, data } = action.payload;
       state.hourlyWeatherData[key] = data;
-    },
-    setLastUpdated: (state, action) => {
-      state.lastUpdated = action.payload;
     },
     setRefreshing: (state, action) => {
       state.refreshing = action.payload;
@@ -192,18 +180,9 @@ const weatherSlice = createSlice({
   }
 });
 
-export const { addCity, removeCity, updateWeatherData, updateHourlyWeatherData, setLastUpdated, setRefreshing, setLoading, setError } = weatherSlice.actions
-
+export const { addCity, removeCity, updateWeatherData, updateHourlyWeatherData, setRefreshing, setLoading, setError } = weatherSlice.actions
 export default weatherSlice.reducer
 
-// Selectors
-export const selectCities = (state) => state.weather.cities
-export const selectWeatherData = (state) => state.weather.weatherData
-export const selectHourlyWeatherData = (state) => state.weather.hourlyWeatherData
-export const selectLastUpdated = (state) => state.weather.lastUpdated
-export const selectRefreshing = (state) => state.weather.refreshing
-export const selectLoading = (state) => state.weather.loading
-export const selectError = (state) => state.weather.error
 export const selectWeatherForCity = (state, cityId) => state.weather.weatherData[cityId]
 export const selectHourlyWeatherForLocation = (state, latitude, longitude, date) => {
   const key = `${latitude}-${longitude}-${date}`

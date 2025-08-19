@@ -4,20 +4,14 @@ import CityGrid from "@/components/CityGrid";
 import Clock from "@/components/Clock";
 import DayDetail from "@/components/DayDetail";
 import Search from "@/components/Search";
-import { refreshAllWeatherData, selectLastUpdated, selectRefreshing } from "@/redux/slices/weatherSlice";
+import { refreshAllWeatherData } from "@/redux/slices/weatherSlice";
 import { useDispatch, useSelector } from "react-redux";
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 export default function Home() {
   const dispatch = useDispatch();
-  const lastUpdated = useSelector(selectLastUpdated);
-  const refreshing = useSelector(selectRefreshing);
-
+  const refreshing = useSelector(state => state.weather.refreshing);
   const dayDetailOpen = useSelector(state => state.day.dayDetailOpen)
-
-  const handleManualRefresh = () => {
-    dispatch(refreshAllWeatherData());
-  };
 
   return (
     <div className="h-full w-full flex flex-col items-center py-10">
@@ -30,13 +24,9 @@ export default function Home() {
         </div>
         <Search/>
         <button 
-          onClick={handleManualRefresh}
+          onClick={() => dispatch(refreshAllWeatherData())}
           disabled={refreshing}
-          className={`rounded-[16px] py-1 pl-2 pr-3 flex flex-row items-center transition text-xs bg-[#dadada]  ${
-            refreshing 
-              ? 'text-[#aaaaaa]' 
-              : 'hover:bg-[#aaaaaa]'
-          }`}
+          className={`rounded-[16px] py-1 pl-2 pr-3 flex flex-row items-center transition text-xs bg-[#dadada] ${ refreshing ? 'text-[#aaaaaa]' : 'hover:bg-[#aaaaaa]' }`}
         >
           <RefreshIcon className="pe-1"/> Refresh
         </button>

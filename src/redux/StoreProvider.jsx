@@ -3,11 +3,11 @@
 import React, { useEffect } from 'react'
 import { Provider, useDispatch, useSelector } from 'react-redux'
 import { store } from './store'
-import { refreshAllWeatherData, selectCities } from './slices/weatherSlice'
+import { refreshAllWeatherData } from './slices/weatherSlice'
 
 function WeatherTimer({ children }) {
   const dispatch = useDispatch()
-  const cities = useSelector(selectCities)
+  const cities = useSelector(state => state.weather.cities)
 
   useEffect(() => {
     const interval = setInterval(() => {
