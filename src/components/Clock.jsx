@@ -23,7 +23,7 @@ const Clock = () => {
   });
 
   return (
-    <div className="text-lg">
+    <div className="text-lg fade-in">
       <p>{formattedTime}</p>
     </div>
   );

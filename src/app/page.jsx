@@ -14,7 +14,7 @@ export default function Home() {
   const dayDetailOpen = useSelector(state => state.day.dayDetailOpen)
 
   return (
-    <div className="h-full w-full flex flex-col items-center py-10">
+    <div className="h-full w-full flex flex-col items-center py-10 fade-in">
 
       {/* Header */}
       <div className="flex flex-col flex-1 gap-3 m-10 items-center h-fit">

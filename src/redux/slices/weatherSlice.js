@@ -19,7 +19,7 @@ const initialState = {
 
 export const addNewCity = createAsyncThunk(
   'weather/addNewCity',
-  async (cityName, { dispatch }) => {
+  async (cityName, { getState, dispatch, rejectWithValue }) => {
     try {
       const geocodeResponse = await fetch(`/api/geocode?city=${encodeURIComponent(cityName)}`)
       if (!geocodeResponse.ok) {
@@ -35,6 +35,13 @@ export const addNewCity = createAsyncThunk(
         latitude: geocodeData.latitude,
         longitude: geocodeData.longitude,
       }
+
+      const state = getState()
+      const existingCity = state.weather.cities.find(city => city.id === geocodeData.id)
+      if (existingCity) {
+        return { success: true, city: newCity }
+      }
+      
       dispatch(addCity(newCity))
 
       const weatherResponse = await fetch(`/api/weather?lat=${newCity.latitude}&lon=${newCity.longitude}&type=daily`)
@@ -45,6 +52,7 @@ export const addNewCity = createAsyncThunk(
 
       const weatherData = await weatherResponse.json()
       dispatch(updateWeatherData({ cityId: newCity.id, data: weatherData }))
+      console.log(weatherData)
 
       return { success: true, city: newCity }
     } catch (error) {
@@ -89,7 +97,6 @@ export const refreshAllWeatherData = createAsyncThunk(
   }
 )
 
-// Async thunk for fetching hourly weather data
 export const fetchHourlyWeatherData = createAsyncThunk(
   'weather/fetchHourlyWeatherData',
   async ({ latitude, longitude, date }, { dispatch }) => {
@@ -112,6 +119,7 @@ export const fetchHourlyWeatherData = createAsyncThunk(
     }
   }
 )
+
 export const refreshHourlyWeatherData = createAsyncThunk(
   'weather/refreshHourlyWeatherData',
   async (_, { getState, dispatch }) => {

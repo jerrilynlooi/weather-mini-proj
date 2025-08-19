@@ -29,7 +29,7 @@ const Search = () => {
 	const displayError = localError || error;
 
   return (
-		<div className='flex flex-col items-center gap-2'>
+		<div className='flex flex-col items-center gap-2 fade-in'>
 			<form className='w-full flex flex-row gap-2' 
 				onSubmit={(e) => {
 					e.preventDefault()
