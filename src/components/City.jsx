@@ -1,12 +1,13 @@
 "use client"
 
-import { openDayDetail } from '@/redux/slices/daySlice';
-import { removeCity, selectWeatherForCity } from '@/redux/slices/weatherSlice';
+import React from 'react';
+import { openDayDetail } from '@/redux/actions/dayActions';
+import { selectWeatherForCity } from '@/utils/selectors/';
 import CloseIcon from '@mui/icons-material/Close';
 import { LinearProgress } from '@mui/material';
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getWeatherInfo } from '@/utils/weather'
+import { removeCity } from '@/redux/actions/weatherActions';
 
 const City = ({ city }) => {
 	const dispatch = useDispatch()

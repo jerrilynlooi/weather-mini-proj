@@ -4,14 +4,32 @@ import CityGrid from "@/components/CityGrid";
 import Clock from "@/components/Clock";
 import DayDetail from "@/components/DayDetail";
 import Search from "@/components/Search";
-import { refreshAllWeatherData } from "@/redux/slices/weatherSlice";
+import { refreshAllWeatherData } from "@/redux/actions/weatherActions";
 import { useDispatch, useSelector } from "react-redux";
 import RefreshIcon from '@mui/icons-material/Refresh';
+import { useEffect } from "react";
 
 export default function Home() {
   const dispatch = useDispatch();
+  const cities = useSelector(state => state.weather.cities)
   const refreshing = useSelector(state => state.weather.refreshing);
-  const dayDetailOpen = useSelector(state => state.day.dayDetailOpen)
+  const dayDetailOpen = useSelector(state => state.day.dayDetailOpen);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (cities.length > 0) {
+        dispatch(refreshAllWeatherData())
+      }
+    }, 60000)
+
+    return () => clearInterval(interval)
+  }, [cities.length, dispatch])
+
+  useEffect(() => {
+    if (cities.length > 0) {
+      dispatch(refreshAllWeatherData())
+    }
+  }, [])
 
   return (
     <div className="h-full w-full flex flex-col items-center py-10 fade-in">

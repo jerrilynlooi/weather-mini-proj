@@ -1,6 +1,6 @@
 "use client"
 
-import { addNewCity } from '@/redux/slices/weatherSlice'
+import { addNewCity } from '@/redux/actions/weatherActions'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -15,7 +15,7 @@ const Search = () => {
 	async function searchCity(cityName) {
 		setLocalError('');
 		try {
-			const result = await dispatch(addNewCity(cityName)).unwrap();
+			const result = await dispatch(addNewCity(cityName));
 			if (result.success) {
 				setCity('');
 			} else {

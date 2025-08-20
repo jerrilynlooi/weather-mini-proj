@@ -1,7 +1,8 @@
 "use client"
 
-import { closeDayDetail } from '@/redux/slices/daySlice'
-import { fetchHourlyWeatherData, selectHourlyWeatherForLocation } from '@/redux/slices/weatherSlice'
+import { closeDayDetail } from '@/redux/actions/dayActions'
+import { fetchHourlyWeatherData } from '@/redux/actions/weatherActions'
+import { selectHourlyWeatherForLocation } from '@/utils/selectors'
 import { LinearProgress } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import React, { useEffect } from 'react'
@@ -88,7 +89,7 @@ const DayDetail = () => {
 
 				{/* Cards */}
 				<div className='flex flex-col p-1 gap-2'>
-					{rain ? <Precipitation data={data}/> : <p className='text-[#888888] my-1'><i>No chance of Precipitation💧</i></p>}
+					{rain ? <Precipitation data={data}/> : <p className='text-[#888888] mb-3'><i>No chance of Precipitation💧</i></p>}
 					<WindSpeed data={data}/>
 					{/* <p className='text-[#3c3c3c] my-1'>Visibility: <span className='font-semibold'>{Math.round(Math.min(...data.visibility)/1000)}</span> km</p> */}
 				</div>

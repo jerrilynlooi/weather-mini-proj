@@ -1,10 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
-import weatherSlice from "@/redux/slices/weatherSlice"
-import daySlice from "@/redux/slices/daySlice"
+import rootReducer from './reducers'
 
 export const store = configureStore({
-  reducer: {
-    weather: weatherSlice,
-    day: daySlice,
-  }
+  reducer: rootReducer,
+  devTools: process.env.NODE_ENV !== 'production',
 })

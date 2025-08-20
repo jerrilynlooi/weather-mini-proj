@@ -32,6 +32,6 @@ const weatherCodeMap = {
 export function getWeatherInfo(code) {
   return weatherCodeMap[code] || { 
     icon: "❓", 
-    description: "Unknown weather condition" 
+    description: "Unknown" 
   };
 }
