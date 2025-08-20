@@ -38,28 +38,17 @@ export const addNewCity = (cityName) => async (dispatch, getState) => {
   dispatch({ type: types.ADD_NEW_CITY_PENDING })
   
   try {
-    const geocodeData = await weatherService.geocodeCity(cityName)
-
-    const newCity = {
-      id: geocodeData.id,
-      name: geocodeData.name,
-      country: geocodeData.country,
-      latitude: geocodeData.latitude,
-      longitude: geocodeData.longitude,
-    }
+    const geocodeData = await weatherService.geocodeCity(cityName);
+    const newCity = geocodeData;
 
     const state = getState()
-    const existingCity = state.weather.cities.find(city => city.id === geocodeData.id)
-    if (existingCity) {
-      dispatch({ type: types.ADD_NEW_CITY_SUCCESS })
-      return { success: true, city: newCity }
-    }
+    const existingCity = state.weather.cities.find(city => city.id === newCity.id)
     
-    dispatch(addCity(newCity))
-
-    const weatherData = await weatherService.fetchDailyWeather(newCity.latitude, newCity.longitude)
-    dispatch(updateWeatherData({ cityId: newCity.id, data: weatherData }))
-    console.log(weatherData)
+    if (!existingCity) { // if city isn't already on list
+      dispatch(addCity(newCity))
+      const weatherData = await weatherService.fetchDailyWeather(newCity.latitude, newCity.longitude)
+      dispatch(updateWeatherData({ cityId: newCity.id, data: weatherData }))
+    }
 
     dispatch({ type: types.ADD_NEW_CITY_SUCCESS })
     return { success: true, city: newCity }
@@ -90,6 +79,7 @@ export const refreshAllWeatherData = () => async (dispatch, getState) => {
 
     await Promise.all(promises)
     dispatch(refreshHourlyWeatherData())
+
     dispatch({ type: types.REFRESH_ALL_WEATHER_DATA_SUCCESS })
   } catch (error) {
     dispatch({ type: types.REFRESH_ALL_WEATHER_DATA_FAILURE, payload: error.message })

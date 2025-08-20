@@ -27,11 +27,18 @@ const weatherReducer = (state = initialState, action) => {
       }
     case types.REMOVE_CITY:
       const newWeatherData = { ...state.weatherData }
+      const newHourlyWeatherData = { ...state.hourlyWeatherData }
+      
       delete newWeatherData[action.payload]
+      Object.keys(newHourlyWeatherData).forEach(key => {
+        if (key.includes(action.payload.toString())) {
+          delete newHourlyWeatherData[key]
+        }
+      })
+      
       return {
         ...state,
         cities: state.cities.filter(city => city.id !== action.payload),
-        weatherData: newWeatherData
       }
     
     case types.UPDATE_WEATHER_DATA:

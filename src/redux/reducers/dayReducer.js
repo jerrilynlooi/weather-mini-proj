@@ -21,6 +21,17 @@ const dayReducer = (state = initialState, action) => {
         payload: null
       }
     
+    case types.REMOVE_CITY:
+      // Close day detail if the removed city matches the currently open detail
+      if (state.payload && state.payload.id === action.payload) {
+        return {
+          ...state,
+          dayDetailOpen: false,
+          payload: null
+        }
+      }
+      return state
+      
     default:
       return state
   }

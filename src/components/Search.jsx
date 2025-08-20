@@ -41,7 +41,7 @@ const Search = () => {
 					onChange={(e) => {setCity(e.target.value)}} required disabled={loading}
 				/>
 				<button 
-					className='chip flex-2 bg-[#fafafa] hover:bg-[#dadada] disabled:bg-[#f1f1f1] disabled:text-[#dadada] transition' 
+					className='chip flex-2 bg-[#fafafa] hover:bg-[#dadada] disabled:bg-[#f1f1f1] disabled:text-[#dadada] transition-all' 
 					type='submit' disabled={!city || loading}
 				>
 					Search

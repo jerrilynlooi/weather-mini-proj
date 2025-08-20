@@ -13,8 +13,8 @@ export default function RootLayout({ children }) {
   return (
     <StoreProvider>
       <html lang="en">
-        <body className={inter.className}>
-          <div className="w-screen min-h-full h-fit flex flex-col items-center justify-center">
+        <body className={inter.className} suppressHydrationWarning={true}>
+          <div className="w-screen min-h-screen h-full flex flex-col items-center justify-start">
             {children}
           </div>
         </body>

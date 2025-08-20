@@ -22,11 +22,13 @@ export async function GET(request) {
     }
 
     const result = data.results[0];
-    
+    console.log(result.name)
+    console.log(result.country_code)
     return Response.json({
       id: result.id,
       name: result.name,
       country: result.country,
+      country_code: result.country_code,
       latitude: result.latitude,
       longitude: result.longitude,
     });

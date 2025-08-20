@@ -8,6 +8,7 @@ import { LinearProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getWeatherInfo } from '@/utils/weather'
 import { removeCity } from '@/redux/actions/weatherActions';
+import { getCountryFlag } from '@/utils/countries';
 
 const City = ({ city }) => {
 	const dispatch = useDispatch()
@@ -17,10 +18,10 @@ const City = ({ city }) => {
 	const error = data?.error || ''
 
   return (
-    <div key={city.id} className='card gap-4 w-full h-fit flex flex-col bg-[#dadada] fade-in'>
+    <div key={city.id} className={`card gap-4 w-full h-fit flex flex-col bg-[#dadada] fade-in`}>
 			{/* Header */}
 			<div className='flex flex-row justify-between w-full items-center p-1'>
-				<p className='text-xl'><strong>{city.name}</strong>, {city.country}</p>
+				<p className='text-xl'><strong>{city.name}</strong>, {city.country} {getCountryFlag(city.country)}</p>
 				<CloseIcon className='border-1 hover:text-[#f1f1f1] hover:bg-[#3c3c3c] transition rounded-[8px] p-1' onClick={() => dispatch(removeCity(city.id))}/>
 			</div>
 
@@ -36,8 +37,8 @@ const City = ({ city }) => {
 						const weatherInfo = getWeatherInfo(data.weather_code[index]);
 
 						return (
-							<div key={index} className={`flex flex-col items-center inner-card w-full h-[100%] bg-[#f1f1f1] hover:bg-[#fafafa] transition min-w-[90px]
-								${(dayPayload?.id === city.id && dayPayload?.date == date) ? 'ring-2 ' : 'ring-0'}`} // && dayPayload?.date == date
+							<div key={index} className={`flex flex-col items-center inner-card h-[100%] transition min-w-[90px]
+								${(dayPayload?.id === city.id && dayPayload?.date == date) ? 'ring-2 ' : 'ring-0 hover:ring-2 ring-[#aaaaaa]'}`}
 								style={{
 									background: `linear-gradient(to top, 
 										#dbedf3 0%, 
@@ -46,7 +47,7 @@ const City = ({ city }) => {
 										#f1f1f1 100%)`
 								}}
 								onClick={() => {
-									const payload = { ...city, date: date };
+									const payload = { ...city, date: date, index: index };
 									dispatch(openDayDetail(payload));
 								}}
 							>

@@ -30,7 +30,7 @@ const WindSpeed = ({ data }) => {
 	};
 
   return (
-    <div className='fade-in w-full max-w-full inner-card bg-[#f1f1f1]'>
+    <div className='fade-in inner-card'>
 			<h3 className='text-md font-semibold mb-3 px-1'>Wind Speed <span className='font-normal text-[#aaaaaa]'><i>km/h</i></span></h3>
 			<ResponsiveContainer width="100%" height={200}>
 				<AreaChart data={chartData}>
