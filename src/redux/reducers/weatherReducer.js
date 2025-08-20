@@ -2,13 +2,8 @@ import * as types from '../types'
 
 const initialState = {
   cities: [
-    {
-      id: 2158177, // Start with melbourne weather card by default !
-      name: "Melbourne",
-      country: "Australia",
-      latitude: -37.814,
-      longitude: 144.96332,
-    }
+    // Start with melbourne weather card by default !
+    { id: 2158177, name: "Melbourne", country: "Australia", country_code: "AU", latitude: -37.814, longitude: 144.96332 }
   ],
   weatherData: {},
   hourlyWeatherData: {}, 
@@ -25,6 +20,7 @@ const weatherReducer = (state = initialState, action) => {
         ...state,
         cities: [...state.cities, action.payload]
       }
+      
     case types.REMOVE_CITY:
       const newWeatherData = { ...state.weatherData }
       const newHourlyWeatherData = { ...state.hourlyWeatherData }

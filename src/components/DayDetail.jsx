@@ -74,7 +74,7 @@ const DayDetail = () => {
 
 							return (
 								<div key={index} className='flex flex-col items-center min-w-[49px] max-w-[49px] h-full'>
-									<p className='text-lg mb-1'>{weatherInfo.icon}</p>
+									<p className='text-2xl mb-1'>{weatherInfo.icon}</p>
 									<p className='text-lg'>{Math.round(data.temperature_2m[index])}°</p>
 									<p className='font-semibold text-sm mt-1 border-b-1 w-full text-center'>
 										{new Date(time).toLocaleTimeString('en-US', {
