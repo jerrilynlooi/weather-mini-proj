@@ -8,7 +8,7 @@ import { LinearProgress } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { getWeatherInfo } from '@/utils/weather'
 import { removeCity } from '@/redux/actions/weatherActions';
-import { getCountryCodeFlag, getCountryFlag } from '@/utils/countries';
+import { getCountryCodeFlag } from '@/utils/countries';
 
 const City = ({ city }) => {
 	const dispatch = useDispatch()
@@ -21,7 +21,7 @@ const City = ({ city }) => {
     <div key={city.id} className={`card gap-4 w-full h-fit flex flex-col bg-[#dadada] fade-in`}>
 			{/* Header */}
 			<div className='flex flex-row justify-between w-full items-center p-1'>
-				<p className='text-xl'><strong>{city.name}</strong>, {city.country} {getCountryCodeFlag(city.country_code)}</p>
+				<p className='text-xl'><strong>{city.name}</strong>, {city.country} <span className='text-[22px]'>{getCountryCodeFlag(city.country_code)}</span></p>
 				<CloseIcon className='border-1 hover:text-[#f1f1f1] hover:bg-[#3c3c3c] transition rounded-[8px] p-1' onClick={() => dispatch(removeCity(city.id))}/>
 			</div>
 

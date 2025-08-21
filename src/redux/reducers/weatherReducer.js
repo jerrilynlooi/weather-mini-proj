@@ -21,17 +21,15 @@ const weatherReducer = (state = initialState, action) => {
         cities: [...state.cities, action.payload]
       }
       
-    case types.REMOVE_CITY:
+    case types.REMOVE_CITY: // remove cache of all data for city as well
       const newWeatherData = { ...state.weatherData }
       const newHourlyWeatherData = { ...state.hourlyWeatherData }
-      
       delete newWeatherData[action.payload]
       Object.keys(newHourlyWeatherData).forEach(key => {
         if (key.includes(action.payload.toString())) {
           delete newHourlyWeatherData[key]
         }
       })
-      
       return {
         ...state,
         cities: state.cities.filter(city => city.id !== action.payload),
@@ -46,6 +44,7 @@ const weatherReducer = (state = initialState, action) => {
           [cityId]: data
         }
       }
+
     case types.UPDATE_HOURLY_WEATHER_DATA:
       const { key, data: hourlyData } = action.payload
       return {

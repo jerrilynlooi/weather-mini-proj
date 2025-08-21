@@ -22,8 +22,8 @@ export async function GET(request) {
 
     const response = await fetch(url);
     if (!response.ok) { throw new Error(`Weather API error: ${response.status}`); }
-    const data = await response.json();
     
+    const data = await response.json();
     if (type === 'daily') {
       if (!data.daily) { return Response.json({ error: 'Daily data not found' }, { status: 404 }); }
       return Response.json(data.daily);

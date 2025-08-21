@@ -19,8 +19,11 @@ export default function Home() {
       {/* Header */}
       <div className="flex flex-col flex-1 gap-3 m-10 items-center h-fit">
         <div className="flex flex-col items-center gap-2">
-          <h1 className="text-4xl font-bold">Weather</h1>
-          <Clock/>
+          <p className="text-4xl font-bold">Weather</p>
+          <div className="flex flex-row w-fit items-center gap-1">
+            <a href="/calendar" className='hover:bg-[#dadada] transition-all rounded-lg p-1'>🗓️</a>
+            <Clock/>
+          </div>
         </div>
         <Search/>
         {!noContent && <RefreshBtn/>}

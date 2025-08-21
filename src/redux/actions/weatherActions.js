@@ -1,7 +1,7 @@
 import { weatherService } from '../services'
 import * as types from '../types'
 
-// Actions
+// actions
 export const addCity = (city) => ({
   type: types.ADD_CITY,
   payload: city
@@ -33,7 +33,7 @@ export const setError = (error) => ({
   payload: error
 })
 
-// Async Actions (Thunks)
+// async actions (thunks)
 export const addNewCity = (cityName) => async (dispatch, getState) => {
   dispatch({ type: types.ADD_NEW_CITY_PENDING })
   
@@ -61,7 +61,6 @@ export const addNewCity = (cityName) => async (dispatch, getState) => {
 export const refreshAllWeatherData = () => async (dispatch, getState) => {
   const state = getState()
   const cities = state.weather.cities
-  
   if (cities.length === 0) return
 
   dispatch(setRefreshing(true))

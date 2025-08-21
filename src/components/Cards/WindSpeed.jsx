@@ -12,7 +12,7 @@ const WindSpeed = ({ data }) => {
 					hour: 'numeric',
 					hour12: true,
 				}).toLowerCase().replace(' ', ''),
-				windspeed: data.wind_speed_10m[index]
+				windspeed: Math.round(data.wind_speed_10m[index])
 			} : null;
 		})
 		.filter(Boolean) : [];
@@ -41,7 +41,7 @@ const WindSpeed = ({ data }) => {
 						stroke="#3c3c3c"
 					/>
 					<YAxis 
-						domain={[0, 30]}
+						domain={[0, 40]}
 						tick={{ fontSize: 10 }}
 						stroke="#3c3c3c"
 						label={{ value: 'km/h', position: 'insideLeft',

@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { getWeatherInfo } from '@/utils/weather';
 import Precipitation from './Cards/Precipitation';
 import WindSpeed from './Cards/WindSpeed';
+import { getCountryCodeFlag } from '@/utils/countries'
 
 const DayDetail = () => {
 	const dispatch = useDispatch()
@@ -43,11 +44,11 @@ const DayDetail = () => {
 			{/* Header */}
 			<div className='flex flex-col w-full p-1'>
 				<div className='flex flex-row justify-between w-full items-center'>
-					<p className='text-xl'><strong>{payload.name}</strong>, {payload.country}</p>
+					<p className='text-xl'><strong>{new Date(payload.date).toLocaleDateString('en-GB', { weekday: 'long' })}</strong> {new Date(payload.date).toLocaleDateString('en-GB', {day: 'numeric', month: 'long'})}</p>
 					<CloseIcon className='border-1 hover:bg-[#aaaaaa] transition-all rounded-[8px] p-1' onClick={() => dispatch(closeDayDetail())}/>
 				</div>
 				<p className='w-full'>
-					<span className='font-semibold'>{new Date(payload.date).toLocaleDateString('en-GB', { weekday: 'long' })}</span> {new Date(payload.date).toLocaleDateString('en-GB', {day: 'numeric', month: 'long'})}
+					<span className='font-semibold'>{payload.name}</span>, {payload.country} {getCountryCodeFlag(payload.country_code)}
 				</p>
 			</div>
 
